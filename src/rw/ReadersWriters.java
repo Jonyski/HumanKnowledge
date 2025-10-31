@@ -52,7 +52,8 @@ public class ReadersWriters {
                 totalTime += t;
             }
             long meanTime = totalTime / 50;
-            System.out.println(String.format("Tempo médio para %d leitores: %d", i, meanTime));
+            System.out
+                    .println(String.format("Tempo médio para %d leitores e %d escritores: %dms", i, 100 - i, meanTime));
         }
     }
 

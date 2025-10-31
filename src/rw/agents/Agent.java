@@ -1,4 +1,4 @@
-package rw;
+package rw.agents;
 
 import java.util.*;
 import java.util.concurrent.locks.Lock;

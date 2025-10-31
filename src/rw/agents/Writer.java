@@ -1,6 +1,5 @@
 package rw.agents;
 
-import rw.Agent;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 
