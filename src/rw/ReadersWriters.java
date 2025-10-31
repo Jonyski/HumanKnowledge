@@ -1,6 +1,5 @@
 package rw;
 
-// import java.io.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.FileReader;
@@ -13,9 +12,9 @@ import rw.agents.*;
 public class ReadersWriters {
     private static final int numObjs = 100;
     private final int numReaders;
-    public ArrayList<Thread> threadObjs;
-    public ArrayList<String> DB;
-    private Lock DBLock;
+    public ArrayList<Thread> threadObjs; // Lista de agentes (Readers e Writers)
+    public ArrayList<String> DB; // Lista de palavras do bd.txt
+    private Lock DBLock; // Um lock único - TODO: substituir por lógica "sofisticada"
 
     public ReadersWriters(int numReaders) {
         this.numReaders = numReaders;
@@ -70,6 +69,8 @@ public class ReadersWriters {
     }
 
     private void initThreads() {
+        // Da forma como está, todas as threads recebem o mesmo Lock
+        // e portanto nunca compartilham o recurso de verdade
         for (int i = 0; i < ReadersWriters.numObjs; i++) {
             if (i < numReaders) {
                 threadObjs.add(new Thread(new Reader(DB, DBLock)));

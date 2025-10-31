@@ -8,6 +8,7 @@ public class Writer extends Agent implements Runnable {
         super(DB, lock);
     }
 
+    // Escreve 100 vezes "MODIFICADO" no BD e dorme por 1ms
     public void run() {
         lock.lock();
         try {
