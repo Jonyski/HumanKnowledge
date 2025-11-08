@@ -1,16 +1,15 @@
 package rw.agents;
 
 import java.util.*;
-import java.util.concurrent.locks.Lock;
 
 public class Writer extends Agent implements Runnable {
-    public Writer(ArrayList<String> DB, Lock lock) {
+    public Writer(ArrayList<String> DB, RWLock lock) {
         super(DB, lock);
     }
 
     // Escreve 100 vezes "MODIFICADO" no BD e dorme por 1ms
     public void run() {
-        lock.lock();
+        lock.writeLock();
         try {
             for (int i = 0; i < 100; i++) {
                 write();
@@ -21,7 +20,7 @@ public class Writer extends Agent implements Runnable {
                 Thread.currentThread().interrupt();
             }
         } finally {
-            lock.unlock();
+            lock.writeUnlock();
         }
     }
 

@@ -1,13 +1,12 @@
 package rw.agents;
 
 import java.util.*;
-import java.util.concurrent.locks.Lock;
 
 public abstract class Agent {
     protected ArrayList<String> DB;
-    protected Lock lock;
+    protected RWLock lock;
 
-    public Agent(ArrayList<String> DB, Lock lock) {
+    public Agent(ArrayList<String> DB, RWLock lock) {
         this.DB = DB;
         this.lock = lock;
     }
