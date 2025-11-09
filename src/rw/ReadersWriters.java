@@ -2,7 +2,9 @@ package rw;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.*;
 import java.nio.file.*;
 import java.util.concurrent.locks.ReentrantLock;
@@ -26,33 +28,40 @@ public class ReadersWriters {
     }
 
     public static void main(String[] args) {
-        for (int i = 0; i < 100; i++) {
-            // Armazenando os tempos de cada iteração para calcular a média
-            ArrayList<Long> times = new ArrayList<Long>();
-            for (int j = 0; j < 50; j++) {
-                ReadersWriters rw = new ReadersWriters(i);
-                long startTime = System.currentTimeMillis();
-                // Iniciando as threads de todos os Leitores e Escritores
-                rw.threadObjs.forEach(t -> t.start());
-                // Esperando elas terminarem
-                rw.threadObjs.forEach(t -> {
-                    try {
-                        t.join();
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
-                });
-                // Calculando quanto tempo demorou essa brincadeira
-                long deltaTime = System.currentTimeMillis() - startTime;
-                times.add(deltaTime);
+        try (PrintWriter log = new PrintWriter(new FileWriter("log-blocking.txt"))) {
+            for (int i = 0; i < 100; i++) {
+                // Armazenando os tempos de cada iteração para calcular a média
+                ArrayList<Long> times = new ArrayList<Long>();
+                for (int j = 0; j < 50; j++) {
+                    ReadersWriters rw = new ReadersWriters(i);
+                    long startTime = System.currentTimeMillis();
+                    // Iniciando as threads de todos os Leitores e Escritores
+                    rw.threadObjs.forEach(t -> t.start());
+                    // Esperando elas terminarem
+                    rw.threadObjs.forEach(t -> {
+                        try {
+                            t.join();
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                    });
+                    // Calculando quanto tempo demorou essa brincadeira
+                    long deltaTime = System.currentTimeMillis() - startTime;
+                    times.add(deltaTime);
+                }
+                long totalTime = 0;
+                for (long t : times) {
+                    totalTime += t;
+                }
+                long meanTime = totalTime / 50;
+                String output = String.format("Tempo médio para %d leitores e %d escritores: %dms", i, 100 - i, meanTime);
+
+                log.println(output); // escreve no arquivo de log
+                log.flush();
+                System.out.println(output); // imprime no console
             }
-            long totalTime = 0;
-            for (long t : times) {
-                totalTime += t;
-            }
-            long meanTime = totalTime / 50;
-            System.out
-                    .println(String.format("Tempo médio para %d leitores e %d escritores: %dms", i, 100 - i, meanTime));
+        } catch (IOException e) {
+            System.err.println("Erro ao escrever no arquivo de log: " + e.getMessage());
         }
     }
 

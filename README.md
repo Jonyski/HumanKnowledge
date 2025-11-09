@@ -14,10 +14,10 @@ This is a program that demonstrates the famous problem in parallel programming k
 
 [X] Create timing control
 
-[ ] Replace current Locks with more sophisticated Reader/Writer control
+[x] Replace current Locks with more sophisticated Reader/Writer control
 
-[ ] Log the output to a file
+[x] Log the output to a file
 
-[ ] Create a blocking version of the program
+[x] Create a blocking version of the program
 
-[ ] Log the blocking output
+[x] Log the blocking output
