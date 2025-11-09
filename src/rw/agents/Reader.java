@@ -1,19 +1,18 @@
 package rw.agents;
 
 import java.util.*;
-import java.util.concurrent.locks.Lock;
 
 public class Reader extends Agent implements Runnable {
-    private ArrayList<String> wordsRead; // Só existe por que o enunciado pede
+    private ArrayList<String> wordsRead; // Só existe porque o enunciado pede
 
-    public Reader(ArrayList<String> DB, Lock lock) {
+    public Reader(ArrayList<String> DB, RWLock lock) {
         super(DB, lock);
         this.wordsRead = new ArrayList<String>();
     }
 
     // Lê 100 palavras do BD e dorme por 1ms
     public void run() {
-        lock.lock();
+        lock.readLock();
         try {
             for (int i = 0; i < 100; i++) {
                 read();
@@ -24,7 +23,7 @@ public class Reader extends Agent implements Runnable {
                 Thread.currentThread().interrupt();
             }
         } finally {
-            lock.unlock();
+            lock.readUnlock();
         }
     }
 
