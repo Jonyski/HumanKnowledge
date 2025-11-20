@@ -1,2 +1,7 @@
 bin/
-
+.idea/
+target/
+.project
+pom.xml
+.classpath
+.settings/
